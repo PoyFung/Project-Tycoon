@@ -12,14 +12,6 @@ public class CreateDeck : MonoBehaviour
 {
     private int totalCards = 54;
     [SerializeField] private Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
-
-    /* 
-    13 HEARTS
-    13 DIAMONDS
-    13 SPADES
-    13 CLUBS
-    2 Jokers
-     */
     private void Awake()
     {
         createNewDeck();
@@ -43,6 +35,12 @@ public class CreateDeck : MonoBehaviour
 
     private void createNewDeck()
     {
+        /* 13 HEARTS
+           13 DIAMONDS
+           13 SPADES
+           13 CLUBS
+           2 Jokers */
+
         for (int i = 3; i <= 10; i++)
         {
             int rank = i - 2;
