@@ -10,8 +10,9 @@ public class card
 }
 public class CreateDeck : MonoBehaviour
 {
+    public static CreateDeck Instance { get; private set; }
     private int totalCards = 54;
-    [SerializeField] private Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
+    public Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
     private void Awake()
     {
         createNewDeck();

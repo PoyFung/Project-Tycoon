@@ -7,8 +7,6 @@ public class player
 {
     [SerializeField]
     public Dictionary<string,card> playerHand = new Dictionary<string,card>(); //Player's current hand
-    public string playerType; //Current user or Opponents?
-    public int numCards; //The numbers of cards currently in hand
 }
 
 public class MainTycoon : MonoBehaviour
@@ -17,7 +15,7 @@ public class MainTycoon : MonoBehaviour
 
     private void Awake()
     {
-        
+        player playerOne = new player();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,5 +28,15 @@ public class MainTycoon : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void fillHand()
+    {
+        var mtDeck = CreateDeck.Instance.mainDeck;
+        int i = 0;
+        foreach(var entry in mtDeck)
+        {
+            
+        }
     }
 }
