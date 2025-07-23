@@ -13,8 +13,19 @@ public class CreateDeck : MonoBehaviour
     public static CreateDeck Instance { get; private set; }
     private int totalCards = 54;
     public Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
+
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this; // Assign the singleton instance
+            DontDestroyOnLoad(gameObject); // Optional: keep between scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Ensure only one instance exists
+        }
+
         createNewDeck();
         shuffleDeck();
     }
@@ -22,10 +33,12 @@ public class CreateDeck : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        /*
         foreach (var entry in mainDeck)
         {
             Debug.Log(entry);
         }
+        */
     }
 
     // Update is called once per frame
