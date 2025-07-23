@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using TMPro;
 using UnityEngine;
+using UnityEngine.XR;
 public class card
 {
     [SerializeField]
+    public GameObject cardObject; //2D Card Sprite
     public string cardType; //Number, Face or Joker?
     public int cardRank; //Card Number
     public string cardSuite; //Hearts, Diamonds, Spades and Clubs
@@ -13,6 +17,9 @@ public class CreateDeck : MonoBehaviour
     public static CreateDeck Instance { get; private set; }
     private int totalCards = 54;
     public Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
+
+    [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private GameObject mainDeckObject;
 
     private void Awake()
     {
@@ -27,7 +34,6 @@ public class CreateDeck : MonoBehaviour
         }
 
         createNewDeck();
-        shuffleDeck();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -132,7 +138,24 @@ public class CreateDeck : MonoBehaviour
         card newJoker = new card() { cardType = "Wild", cardRank = 24, cardSuite = "" };
         mainDeck.Add("Joker1", newJoker);
         mainDeck.Add("Joker2", newJoker);
+
+        shuffleDeck();
+        foreach (var card in mainDeck)
+        {
+
+            createCardObject(card.Key,card);
+        }
     }
+
+    void createCardObject(string cardName, KeyValuePair<string,card> cardEntry)
+    {
+        GameObject cardObject = Instantiate(cardPrefab, mainDeckObject.transform);
+        TextMeshProUGUI cardText = cardObject.GetComponentInChildren<TextMeshProUGUI>();
+        cardText.text = cardName;
+        cardObject.name = cardName;
+        cardEntry.Value.cardObject = cardObject;
+    }
+    
 
     private void shuffleDeck()
     {

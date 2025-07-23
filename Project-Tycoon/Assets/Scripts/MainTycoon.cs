@@ -11,15 +11,15 @@ using UnityEngine.UI;
 public class player
 {
     [SerializeField]
-    public Dictionary<string,card> playerHand = new Dictionary<string,card>(); //Player's current hand
+    public List<card> playerHand = new List<card>();
 }
 
 public class MainTycoon : MonoBehaviour
 {
-    [SerializeField] private GameObject p1Hand; //Player
     player playerOne = new player();
-
-    [SerializeField] private GameObject cardPrefab;
+    
+    [SerializeField] private GameObject p1Hand; //Player
+    [SerializeField] private GameObject handSpace; //Player's Hand on Screen
 
     private void Awake()
     {
@@ -49,16 +49,14 @@ public class MainTycoon : MonoBehaviour
         for(int p1HandNumber = 0;p1HandNumber<2;p1HandNumber++)
         {
             var randomCard = mtDeck.ElementAt(UnityEngine.Random.Range(0, mtDeck.Count));
-            playerOne.playerHand.Add(randomCard.Key, randomCard.Value);
-            createCardObject(randomCard.Key);
+            playerOne.playerHand.Add(randomCard.Value);
+            randomCard.Value.cardObject.transform.parent = p1Hand.transform;
             mtDeck.Remove(randomCard.Key);
         }
     }
 
-    void createCardObject(string cardName)
+    void cardSpacePositioning()
     {
-        GameObject cardObject = Instantiate(cardPrefab, p1Hand.transform);
-        TextMeshProUGUI cardText = cardObject.GetComponentInChildren<TextMeshProUGUI>();
-        cardText.text = cardName;
+
     }
 }
