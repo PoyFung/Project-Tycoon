@@ -149,7 +149,7 @@ public class CreateDeck : MonoBehaviour
     void createCardObject(string cardName, KeyValuePair<string,card> cardEntry)
     {
         GameObject cardObject = Instantiate(cardPrefab, mainDeckObject.transform);
-        TextMeshProUGUI cardText = cardObject.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshPro cardText = cardObject.GetComponentInChildren<TextMeshPro>();
         cardText.text = cardName;
         cardObject.name = cardName;
         cardEntry.Value.cardObject = cardObject;
@@ -160,5 +160,10 @@ public class CreateDeck : MonoBehaviour
     {
         var shuffled = mainDeck.OrderBy(x => Random.value).ToList();
         mainDeck = shuffled.ToDictionary(pair => pair.Key, pair => pair.Value);
+    }
+
+    private void OnMouseEnter()
+    {
+        
     }
 }

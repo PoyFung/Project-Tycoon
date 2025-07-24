@@ -31,10 +31,12 @@ public class MainTycoon : MonoBehaviour
     void Start()
     {
         fillHand();
+        /*
         foreach (var card in playerOne.playerHand)
         {
             Debug.Log(card);
         }
+        */
         cardSpacePositioning();
     }
 
@@ -69,7 +71,7 @@ public class MainTycoon : MonoBehaviour
         {
             float spacing = i;
             playerOne.playerHand[currentCard].cardObject.transform.position
-                = new Vector2(spacing * 1.25f, handSpace.transform.position.y);
+                = new Vector3(spacing * 1.25f, handSpace.transform.position.y,i*-1);
             currentCard++;
         }
     }
