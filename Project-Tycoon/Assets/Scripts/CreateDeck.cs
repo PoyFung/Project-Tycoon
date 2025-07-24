@@ -142,7 +142,6 @@ public class CreateDeck : MonoBehaviour
         shuffleDeck();
         foreach (var card in mainDeck)
         {
-
             createCardObject(card.Key,card);
         }
     }
