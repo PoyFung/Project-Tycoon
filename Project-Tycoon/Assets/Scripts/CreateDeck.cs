@@ -39,12 +39,7 @@ public class CreateDeck : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        /*
-        foreach (var entry in mainDeck)
-        {
-            Debug.Log(entry);
-        }
-        */
+
     }
 
     // Update is called once per frame

@@ -31,12 +31,6 @@ public class MainTycoon : MonoBehaviour
     void Start()
     {
         fillHand();
-        /*
-        foreach (var card in playerOne.playerHand)
-        {
-            Debug.Log(card);
-        }
-        */
         cardSpacePositioning();
     }
 
@@ -57,6 +51,7 @@ public class MainTycoon : MonoBehaviour
             randomCard.Value.cardObject.transform.parent = p1Hand.transform;
             mtDeck.Remove(randomCard.Key);
         }
+        playerOne.playerHand.Sort((cardA, cardB) => cardA.cardRank.CompareTo(cardB.cardRank));
     }
 
     void cardSpacePositioning()
@@ -65,14 +60,22 @@ public class MainTycoon : MonoBehaviour
         Vector2 spaceCenter = handSpace.transform.position;
 
         float leftPos = -1 * (handSize / 2);
-
         int currentCard = 0;
-        for (int i= -1*((handSize-1)/2);i<=handSize/2;i++)
+        for (float i= leftPos;i<=handSize/2;i++)
         {
             float spacing = i;
             playerOne.playerHand[currentCard].cardObject.transform.position
                 = new Vector3(spacing * 1.25f, handSpace.transform.position.y,i*-1);
+
+            //ACTIVATE CARD INTERACTION
+            playerOne.playerHand[currentCard].cardObject.GetComponent<CardInteraction>().enabled=true;
+
             currentCard++;
+            Debug.Log("Hand Size: "+handSize+" ,Spacing: "+spacing);
         }
+    }
+    void playedHandCheck ()
+    {
+
     }
 }

@@ -1,32 +1,31 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CardInteraction : MonoBehaviour
+public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    private void OnMouseEnter()
+    private bool selected = false;
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("WASSUP");
+        if (selected == false)
+        {
+            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + 0.25f);
+        }
+        //Debug.Log("MOUSE ON");
     }
 
-    private void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("BYE BYE");
+        if (selected == false)
+        {
+            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - 0.25f);
+        }
+        //Debug.Log("MOUSE OFF");
     }
 
-    private Vector2 cardToInteract;
-
-    private void Awake()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        cardToInteract = transform.localPosition;
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //Debug.Log("CLICK");
+        selected = !selected;
     }
 }
