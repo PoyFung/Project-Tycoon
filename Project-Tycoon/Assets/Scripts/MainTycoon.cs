@@ -26,7 +26,11 @@ public class MainTycoon : MonoBehaviour
     [SerializeField] private GameObject p2Hand;
     [SerializeField] private GameObject p3Hand;
     [SerializeField] private GameObject p4Hand;
-    [SerializeField] private GameObject handSpace; //Player's Hand on Screen
+    
+    [SerializeField] private GameObject p1HandSpace; //Player's Hand on Screen
+    [SerializeField] private GameObject p2HandSpace; //Player's Hand on Screen
+    [SerializeField] private GameObject p3HandSpace; //Player's Hand on Screen
+    [SerializeField] private GameObject p4HandSpace; //Player's Hand on Screen
 
     List<int> deckSplit = new List<int>() {13,13,14,14};
 
@@ -39,11 +43,15 @@ public class MainTycoon : MonoBehaviour
     void Start()
     {
         fillPlayerHand(playerOne,p1Hand);
+        playerHandPositioning(playerOne, p1HandSpace);
+
         fillPlayerHand(playerTwo,p2Hand);
         fillPlayerHand(playerThree,p3Hand);
         fillPlayerHand(playerFour,p4Hand);
 
-        cardSpacePositioning(playerOne);
+        opponentHandPositioning(playerTwo,p2HandSpace);
+        opponentHandPositioning(playerThree,p3HandSpace);
+        opponentHandPositioning(playerFour,p4HandSpace);
     }
 
     // Update is called once per frame
@@ -60,36 +68,59 @@ public class MainTycoon : MonoBehaviour
         int pickedNum = deckSplit[pickRandomSplit];
         deckSplit.RemoveAt(pickRandomSplit);
 
-        Debug.Log(pickedNum);
+        //Debug.Log(pickedNum);
 
         for(int p1HandNumber = 0;p1HandNumber<pickedNum;p1HandNumber++)
         {
+            //Debug.Log(mtDeck.Count);
             var randomCard = mtDeck.ElementAt(UnityEngine.Random.Range(0, mtDeck.Count));
             inputPlayer.playerHand.Add(randomCard.Value);
-            randomCard.Value.cardObject.transform.parent = pHand.transform;
             mtDeck.Remove(randomCard.Key);
         }
         inputPlayer.playerHand.Sort((cardA, cardB) => cardA.cardRank.CompareTo(cardB.cardRank));
+
+        foreach (card pCard in inputPlayer.playerHand)
+        {
+            pCard.cardObject.transform.parent = pHand.transform;
+            Debug.Log(pCard.cardRank);
+        }
+        //Debug.Log(mtDeck.Count);
     }
 
-    void cardSpacePositioning(player inputPlayer)
+    void playerHandPositioning(player inputPlayer,GameObject handSpace)
     {
         int handSize = inputPlayer.playerHand.Count;
         Vector2 spaceCenter = handSpace.transform.position;
 
-        float leftPos = -1 * (handSize / 2)+0.5f;
-        int currentCard = 0;
-        for (float i= leftPos;i<handSize/2;i++)
+        //By dividing by 2 and not 2f, the resulting number becomes an int, making it good for odd numbered hands
+        float cardPos = -1f * (handSize / 2);
+
+        if (handSize%2==0)
         {
-            float spacing = i;
+            cardPos += 0.5f;
+        }
+
+        int currentCard = 0;
+        for (int i= 0;i<handSize;i++)
+        {
             inputPlayer.playerHand[currentCard].cardObject.transform.position
-                = new Vector3(spacing * 1.25f, handSpace.transform.position.y,i*-1);
+                = new Vector3(cardPos * 1.25f, handSpace.transform.position.y,cardPos*-1);
 
             //ACTIVATE CARD INTERACTION
             inputPlayer.playerHand[currentCard].cardObject.GetComponent<CardInteraction>().enabled=true;
-
             currentCard++;
-            //Debug.Log("Hand Size: "+handSize+" ,Spacing: "+spacing);
+            cardPos++;
+        }
+    }
+
+    void opponentHandPositioning(player inputOpponent,GameObject handSpace)
+    {
+        int handSize = inputOpponent.playerHand.Count;
+        Vector2 spaceCenter = handSpace.transform.position;
+
+        foreach(var opCard in inputOpponent.playerHand)
+        {
+            opCard.cardObject.transform.position = handSpace.transform.position;
         }
     }
     void possiblePlays ()

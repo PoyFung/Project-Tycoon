@@ -129,9 +129,10 @@ public class CreateDeck : MonoBehaviour
                 }
             }
         }
-        card newJoker = new card() { cardType = "Wild", cardRank = 24, cardSuite = "" };
-        mainDeck.Add("Joker1", newJoker);
-        mainDeck.Add("Joker2", newJoker);
+        card newJoker1 = new card() { cardType = "WildCard", cardRank = 24, cardSuite = "Wild" };
+        card newJoker2 = new card() { cardType = "WildCard", cardRank = 24, cardSuite = "Wild" };
+        mainDeck.Add("Joker1", newJoker1);
+        mainDeck.Add("Joker2", newJoker2);
 
         shuffleDeck();
         foreach (var card in mainDeck)
