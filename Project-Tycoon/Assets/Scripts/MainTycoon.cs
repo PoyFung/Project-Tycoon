@@ -17,6 +17,7 @@ public class player
 
 public class MainTycoon : MonoBehaviour
 {
+    //GET PLAYER OBJECTS-------------------------
     player playerOne = new player();
     player playerTwo = new player();
     player playerThree = new player();
@@ -31,8 +32,17 @@ public class MainTycoon : MonoBehaviour
     [SerializeField] private GameObject p2HandSpace; //Player's Hand on Screen
     [SerializeField] private GameObject p3HandSpace; //Player's Hand on Screen
     [SerializeField] private GameObject p4HandSpace; //Player's Hand on Screen
+    //-------------------------------------------
 
-    List<int> deckSplit = new List<int>() {13,13,14,14};
+    //GAME PROPERTIES----------------------------
+    List<int> deckSplit = new List<int>() {13,13,14,14}; //Splitting the deck
+
+    //Type of hands being played
+    public bool isSingle = false;
+    public bool isDouble = false;
+    public bool isTriple = false;
+    public bool isQuadruple = false;
+    public bool isRevolution = false;
 
     private void Awake()
     {
@@ -70,6 +80,7 @@ public class MainTycoon : MonoBehaviour
 
         //Debug.Log(pickedNum);
 
+
         for(int p1HandNumber = 0;p1HandNumber<pickedNum;p1HandNumber++)
         {
             //Debug.Log(mtDeck.Count);
@@ -79,12 +90,12 @@ public class MainTycoon : MonoBehaviour
         }
         inputPlayer.playerHand.Sort((cardA, cardB) => cardA.cardRank.CompareTo(cardB.cardRank));
 
+        //Place cards from list into Player Parent
         foreach (card pCard in inputPlayer.playerHand)
         {
             pCard.cardObject.transform.parent = pHand.transform;
             Debug.Log(pCard.cardRank);
         }
-        //Debug.Log(mtDeck.Count);
     }
 
     void playerHandPositioning(player inputPlayer,GameObject handSpace)

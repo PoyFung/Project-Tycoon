@@ -149,16 +149,10 @@ public class CreateDeck : MonoBehaviour
         cardObject.name = cardName;
         cardEntry.Value.cardObject = cardObject;
     }
-    
 
     private void shuffleDeck()
     {
         var shuffled = mainDeck.OrderBy(x => Random.value).ToList();
         mainDeck = shuffled.ToDictionary(pair => pair.Key, pair => pair.Value);
-    }
-
-    private void OnMouseEnter()
-    {
-        
     }
 }
