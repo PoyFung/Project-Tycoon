@@ -15,7 +15,6 @@ public class card
 public class CreateDeck : MonoBehaviour
 {
     public static CreateDeck Instance { get; private set; }
-    private int totalCards = 54;
     public Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
 
     [SerializeField] private GameObject cardPrefab;
