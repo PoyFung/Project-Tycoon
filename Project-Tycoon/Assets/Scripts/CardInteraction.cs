@@ -1,10 +1,19 @@
 using System.Runtime.CompilerServices;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
+    public static MainTycoon mainInstance { get; private set; }
     private bool selected = false;
+    int numClicks = 0;
+    public string cardKey;
+
+    public void setCardKey(string key)
+    {
+        cardKey = key;
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (selected == false)
@@ -25,11 +34,34 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        selected = true;
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            selected = true;
+            numClicks+=1;
+
+            if (numClicks == 2)
+            {
+                Debug.Log("REACHED");
+                sendToPlayedPile();
+                numClicks = 0;
+                this.enabled = false;
+            }
+        }
+
         if (eventData.button == PointerEventData.InputButton.Right)
         {
+            numClicks = 0;
             selected = false;
         }
-        //Debug.Log("CLICK");
+    }
+
+    void sendToPlayedPile()
+    {
+        GameObject playedCards = GameObject.Find("Played Cards");
+        transform.localPosition = playedCards.transform.localPosition;
+        int index = mainInstance.playerOne.playerHand
+            .FindIndex(pCard=>pCard.cardObject.gameObject==this.gameObject);
+        mainInstance.playedPile.Add(mainInstance.playerOne.playerHand[index]);
+        mainInstance.playerOne.playerHand.RemoveAt(index);
     }
 }

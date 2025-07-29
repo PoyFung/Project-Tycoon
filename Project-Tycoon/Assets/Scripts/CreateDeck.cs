@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
+
 public class card
 {
     [SerializeField]
@@ -144,6 +145,8 @@ public class CreateDeck : MonoBehaviour
     void createCardObject(string cardName, KeyValuePair<string,card> cardEntry)
     {
         GameObject cardObject = Instantiate(cardPrefab, mainDeckObject.transform);
+        CardInteraction currentCard = cardObject.GetComponent<CardInteraction>();
+        currentCard.setCardKey(cardEntry.Key);
         TextMeshPro cardText = cardObject.GetComponentInChildren<TextMeshPro>();
         cardText.text = cardName;
         cardObject.name = cardName;

@@ -18,7 +18,7 @@ public class player
 public class MainTycoon : MonoBehaviour
 {
     //GET PLAYER OBJECTS-------------------------
-    player playerOne = new player();
+    public player playerOne = new player();
     player playerTwo = new player();
     player playerThree = new player();
     player playerFour = new player();
@@ -36,17 +36,20 @@ public class MainTycoon : MonoBehaviour
 
     //GAME PROPERTIES----------------------------
     List<int> deckSplit = new List<int>() {13,13,14,14}; //Splitting the deck
+    public List<card> playedPile = new List<card>();
 
+    /*
     //Type of hands being played
-    public bool isSingle = false;
-    public bool isDouble = false;
-    public bool isTriple = false;
-    public bool isQuadruple = false;
-    public bool isRevolution = false;
+    private bool isSingle = false;
+    private bool isDouble = false;
+    private bool isTriple = false;
+    private bool isQuadruple = false;
+    private bool isRevolution = false;
+    */
 
     private void Awake()
     {
-        
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -78,9 +81,6 @@ public class MainTycoon : MonoBehaviour
         int pickedNum = deckSplit[pickRandomSplit];
         deckSplit.RemoveAt(pickRandomSplit);
 
-        //Debug.Log(pickedNum);
-
-
         for(int p1HandNumber = 0;p1HandNumber<pickedNum;p1HandNumber++)
         {
             //Debug.Log(mtDeck.Count);
@@ -94,7 +94,6 @@ public class MainTycoon : MonoBehaviour
         foreach (card pCard in inputPlayer.playerHand)
         {
             pCard.cardObject.transform.parent = pHand.transform;
-            Debug.Log(pCard.cardRank);
         }
     }
 
@@ -134,8 +133,8 @@ public class MainTycoon : MonoBehaviour
             opCard.cardObject.transform.position = handSpace.transform.position;
         }
     }
-    void possiblePlays ()
+    void displayPossiblePlays ()
     {
-
+        //playerOne.playerHand.ForEach(pCard => {if(pCard.cardRank==)});
     }
 }
