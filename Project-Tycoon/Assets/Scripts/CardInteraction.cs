@@ -25,7 +25,11 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        selected = true;
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            selected = false;
+        }
         //Debug.Log("CLICK");
-        selected = !selected;
     }
 }
