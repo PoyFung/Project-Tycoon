@@ -12,8 +12,8 @@ using UnityEngine.UI;
 public class player
 {
     [SerializeField]
-    public List<GameObject> playerHand = new List<GameObject>();
-    public List<GameObject> selectedCards = new List<GameObject>();
+    public List<card> playerHand = new List<card>();
+    public List<card> selectedCards = new List<card>();
 }
 
 public class MainTycoon : MonoBehaviour
@@ -38,7 +38,7 @@ public class MainTycoon : MonoBehaviour
 
     //GAME PROPERTIES----------------------------
     List<int> deckSplit = new List<int>() {13,13,14,14}; //Splitting the deck
-    public List<GameObject> playedPile = new List<GameObject>();
+    public List<card> playedPile = new List<card>();
 
     /*
     //Type of hands being played
@@ -79,18 +79,17 @@ public class MainTycoon : MonoBehaviour
 
         for(int p1HandNumber = 0;p1HandNumber<pickedNum;p1HandNumber++)
         {
+            //Debug.Log(mtDeck.Count);
             var randomCard = mtDeck.ElementAt(UnityEngine.Random.Range(0, mtDeck.Count));
             inputPlayer.playerHand.Add(randomCard.Value);
             mtDeck.Remove(randomCard.Key);
         }
-        inputPlayer.playerHand.Sort
-            ((cardA, cardB) => cardA.GetComponent<CardProperties>().cardRank.
-            CompareTo(cardB.GetComponent<CardProperties>().cardRank));
+        inputPlayer.playerHand.Sort((cardA, cardB) => cardA.cardRank.CompareTo(cardB.cardRank));
 
         //Place cards from list into Player Parent
-        foreach (var pCard in inputPlayer.playerHand)
+        foreach (card pCard in inputPlayer.playerHand)
         {
-            pCard.transform.parent = pHand.transform;
+            pCard.cardObject.transform.parent = pHand.transform;
         }
     }
 
@@ -110,11 +109,11 @@ public class MainTycoon : MonoBehaviour
         int currentCard = 0;
         for (int i= 0;i<handSize;i++)
         {
-            inputPlayer.playerHand[currentCard].transform.position
+            inputPlayer.playerHand[currentCard].cardObject.transform.position
                 = new Vector3(cardPos * 1.25f, handSpace.transform.position.y,cardPos*-1);
 
             //ACTIVATE CARD INTERACTION
-            inputPlayer.playerHand[currentCard].GetComponent<CardInteraction>().enabled=true;
+            inputPlayer.playerHand[currentCard].cardObject.GetComponent<CardInteraction>().enabled=true;
             currentCard++;
             cardPos++;
         }
@@ -127,34 +126,17 @@ public class MainTycoon : MonoBehaviour
 
         foreach(var opCard in inputOpponent.playerHand)
         {
-            opCard.transform.position = handSpace.transform.position;
+            opCard.cardObject.transform.position = handSpace.transform.position;
         }
     }
-    public void displayPossiblePlays ()
+    public void displayPossiblePlays (int selectedCardRank)
     {
-        if (playerOne.selectedCards.Any())
+        foreach(var pCard in playerOne.playerHand)
         {
-            int currentRankedPlay = playerOne.selectedCards[0].GetComponent<CardProperties>().cardRank;
-            foreach (var pCard in playerOne.playerHand)
+            var currentCard = pCard.cardObject.GetComponent<CardInteraction>();
+            if (currentCard.selected==false && pCard.cardRank!=selectedCardRank)
             {
-                var currentCard = pCard.GetComponent<CardInteraction>();
-                var currentCardProperties = pCard.GetComponent<CardProperties>();
-                if (currentCard.selected == false && currentCardProperties.cardRank != currentRankedPlay)
-                {
-                    currentCard.changeCardColor(new Color32(116, 45, 45, 255));
-                }
-            }
-        }
-        else
-        {
-            foreach (var pCard in playerOne.playerHand)
-            {
-                var currentCard = pCard.GetComponent<CardInteraction>();
-                var currentCardProperties = pCard.GetComponent<CardProperties>();
-                if (currentCard.selected == false)
-                {
-                    currentCard.changeCardColor(new Color32(206, 96, 96, 255));
-                }
+                currentCard.changeCardColor();
             }
         }
     }

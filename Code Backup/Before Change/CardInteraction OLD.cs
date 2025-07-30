@@ -8,7 +8,19 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
     public bool selected = false;
     int numClicks = 0;
+    public string cardKey;
+    public int cardRank;
     private MainTycoon mainInstance;
+
+    public void setCardKey(string key)
+    {
+        cardKey = key;
+    }
+
+    public void setCardRank(int rank)
+    {
+        cardRank = rank;
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -36,16 +48,20 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
         {
             mainInstance = MainTycoon.instance;
             selected = true;
-            mainInstance.playerOne.selectedCards.Add(this.gameObject);
-            mainInstance.displayPossiblePlays();
+            mainInstance.displayPossiblePlays(cardRank);
             numClicks +=1;
 
             if (numClicks == 2)
             {
-                foreach (var sCard in mainInstance.playerOne.selectedCards)
+                foreach (var pCard in mainInstance.playerOne.playerHand)
                 {
-                    sendToPlayedPile(sCard);
-                    mainInstance.playerOne.playerHand.Remove(sCard);
+                    mainInstance = MainTycoon.instance;
+                    var currentCardObject = pCard.cardObject.GetComponent<CardInteraction>().selected;
+                    if (currentCardObject==true)
+                    {
+                        this.enabled = false;
+                        sendToPlayedPile(pCard);
+                    }
                 }
                 numClicks = 0;
             }
@@ -53,23 +69,24 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            mainInstance = MainTycoon.instance;
-            selected = false;
-            mainInstance.playerOne.selectedCards.Remove(this.gameObject);
-            mainInstance.displayPossiblePlays();
             numClicks = 0;
+            selected = false;
         }
     }
 
-    void sendToPlayedPile(GameObject cardToSend)
+    void sendToPlayedPile(card cardToSend)
     {
         GameObject playedCards = GameObject.Find("Played Cards");
-        cardToSend.transform.position = playedCards.transform.localPosition;
-        mainInstance.playedPile.Add(cardToSend);
+        transform.localPosition = playedCards.transform.localPosition;
+        int index = mainInstance.playerOne.playerHand
+            .FindIndex(pCard=>pCard.cardObject.gameObject==this.gameObject);
+
+        mainInstance.playedPile.Add(mainInstance.playerOne.playerHand[index]);
+        mainInstance.playerOne.playerHand.RemoveAt(index);
     }
 
-    public void changeCardColor(Color32 newColor)
+    public void changeCardColor()
     {
-        this.GetComponent<SpriteRenderer>().color = newColor;
+        this.GetComponent<SpriteRenderer>().color = new Color32(116, 45, 45, 255);
     }
 }

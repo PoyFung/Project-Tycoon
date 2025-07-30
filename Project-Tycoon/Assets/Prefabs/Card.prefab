@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1710698919706772004}
   - component: {fileID: 8343994501914147617}
+  - component: {fileID: 7423709897421019518}
   - component: {fileID: 5094564777441428577}
   - component: {fileID: 7046819946888678956}
   m_Layer: 0
@@ -90,6 +91,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7423709897421019518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39472854917991996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48800314c674f744be1582913bab599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5094564777441428577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dea2d44622d14a4591dde5895f46a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selected: 0
+  cardKey: 
+  cardRank: 0
 --- !u!61 &7046819946888678956
 BoxCollider2D:
   m_ObjectHideFlags: 0

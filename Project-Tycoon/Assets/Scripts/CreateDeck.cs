@@ -5,18 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class card
-{
-    [SerializeField]
-    public GameObject cardObject; //2D Card Sprite
-    public string cardType; //Number, Face or Joker?
-    public int cardRank; //Card Number
-    public string cardSuite; //Hearts, Diamonds, Spades and Clubs
-}
 public class CreateDeck : MonoBehaviour
 {
     public static CreateDeck instance { get; private set; }
-    public Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
+    public Dictionary<string, GameObject> mainDeck = new Dictionary<string, GameObject>() { };
 
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private GameObject mainDeckObject;
@@ -36,18 +28,6 @@ public class CreateDeck : MonoBehaviour
         createNewDeck();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void createNewDeck()
     {
         /* 13 HEARTS
@@ -59,15 +39,11 @@ public class CreateDeck : MonoBehaviour
         for (int i = 3; i <= 10; i++)
         {
             int rank = i - 2;
-            card newHeart = new card() { cardType = "Number", cardRank = rank, cardSuite = "Heart" };
-            card newDiamond = new card() { cardType = "Number", cardRank = rank, cardSuite = "Diamond" };
-            card newSpade = new card() { cardType = "Number", cardRank = rank, cardSuite = "Spade" };
-            card newClub = new card() { cardType = "Number", cardRank = rank, cardSuite = "Club" };
+            createCard(i + "H","Number",rank,"Heart");
+            createCard(i + "D","Number",rank,"Diamond");
+            createCard(i + "S","Number",rank,"Spade");
+            createCard(i + "C","Number",rank,"Club");
 
-            mainDeck.Add(i + "H", newHeart);
-            mainDeck.Add(i + "D", newDiamond);
-            mainDeck.Add(i + "S", newSpade);
-            mainDeck.Add(i + "C", newClub);
         }
 
         for (int i = 11; i <= 15; i++)
@@ -75,82 +51,71 @@ public class CreateDeck : MonoBehaviour
             int rank = i - 2;
             if (rank <= 11)
             {
-                card newHeart = new card() { cardType = "Face", cardRank = rank, cardSuite = "Heart" };
-                card newDiamond = new card() { cardType = "Face", cardRank = rank, cardSuite = "Diamond" };
-                card newSpade = new card() { cardType = "Face", cardRank = rank, cardSuite = "Spade" };
-                card newClub = new card() { cardType = "Face", cardRank = rank, cardSuite = "Club" };
-
                 switch (rank)
                 {
                     case 9:
-                        mainDeck.Add("JH", newHeart);
-                        mainDeck.Add("JD", newDiamond);
-                        mainDeck.Add("JS", newSpade);
-                        mainDeck.Add("JC", newClub);
+                        createCard("JH", "Face", rank, "Heart");
+                        createCard("JD", "Face", rank, "Diamond");
+                        createCard("JS", "Face", rank, "Spade");
+                        createCard("JC", "Face", rank, "Club");
                         break;
 
                     case 10:
-                        mainDeck.Add("QH", newHeart);
-                        mainDeck.Add("QD", newDiamond);
-                        mainDeck.Add("QS", newSpade);
-                        mainDeck.Add("QC", newClub);
+                        createCard("QH", "Face", rank, "Heart");
+                        createCard("QD", "Face", rank, "Diamond");
+                        createCard("QS", "Face", rank, "Spade");
+                        createCard("QC", "Face", rank, "Club");
                         break;
 
                     case 11:
-                        mainDeck.Add("KH", newHeart);
-                        mainDeck.Add("KD", newDiamond);
-                        mainDeck.Add("KS", newSpade);
-                        mainDeck.Add("KC", newClub);
+                        createCard("KH", "Face", rank, "Heart");
+                        createCard("KD", "Face", rank, "Diamond");
+                        createCard("KS", "Face", rank, "Spade");
+                        createCard("KC", "Face", rank, "Club");
                         break;
                 }
             }
 
             else if (rank > 11)
             {
-                card newHeart = new card() { cardType = "Number", cardRank = rank, cardSuite = "Heart" };
-                card newDiamond = new card() { cardType = "Number", cardRank = rank, cardSuite = "Diamond" };
-                card newSpade = new card() { cardType = "Number", cardRank = rank, cardSuite = "Spade" };
-                card newClub = new card() { cardType = "Number", cardRank = rank, cardSuite = "Club" };
-
                 switch (rank)
                 {
                     case 12:
-                        mainDeck.Add("AH", newHeart);
-                        mainDeck.Add("AD", newDiamond);
-                        mainDeck.Add("AS", newSpade);
-                        mainDeck.Add("AC", newClub);
+                        createCard("AH", "Number", rank, "Heart");
+                        createCard("AD", "Number", rank, "Diamond");
+                        createCard("AS", "Number", rank, "Spade");
+                        createCard("AC", "Number", rank, "Club");
                         break;
 
                     case 13:
-                        mainDeck.Add("2H", newHeart);
-                        mainDeck.Add("2D", newDiamond);
-                        mainDeck.Add("2S", newSpade);
-                        mainDeck.Add("2C", newClub);
+                        createCard("2H", "Number", rank, "Heart");
+                        createCard("2D", "Number", rank, "Diamond");
+                        createCard("2S", "Number", rank, "Spade");
+                        createCard("2C", "Number", rank, "Club");
                         break;
                 }
             }
         }
-        card newJoker1 = new card() { cardType = "WildCard", cardRank = 24, cardSuite = "Wild" };
-        card newJoker2 = new card() { cardType = "WildCard", cardRank = 24, cardSuite = "Wild" };
-        mainDeck.Add("Joker1", newJoker1);
-        mainDeck.Add("Joker2", newJoker2);
-
+        createCard("Joker1", "Number", 24, "Wild");
+        createCard("Joker2", "Number", 24, "Wild");
         shuffleDeck();
-        foreach (var card in mainDeck)
-        {
-            createCardObject(card.Key,card);
-        }
     }
 
-    void createCardObject(string cardName, KeyValuePair<string,card> cardEntry)
+    void createCard(string inputName, string inputType, int inputRank, string inputSuite)
     {
         GameObject cardObject = Instantiate(cardPrefab, mainDeckObject.transform);
-        CardInteraction currentCard = cardObject.GetComponent<CardInteraction>();
-        currentCard.setCardKey(cardEntry.Key);
+
+        CardProperties cardProperties = cardObject.GetComponent<CardProperties>();
         TextMeshPro cardText = cardObject.GetComponentInChildren<TextMeshPro>();
-        cardText.text = cardName;
-        cardObject.name = cardName;
-        cardEntry.Value.cardObject = cardObject;
+
+        cardProperties.cardName = inputName;
+        cardProperties.cardType = inputType;
+        cardProperties.cardRank = inputRank;
+        cardProperties.cardSuite = inputSuite;
+        cardText.text = inputName;
+        cardObject.name = inputName;
+        
+        mainDeck.Add(inputName,cardObject);
     }
 
     private void shuffleDeck()
