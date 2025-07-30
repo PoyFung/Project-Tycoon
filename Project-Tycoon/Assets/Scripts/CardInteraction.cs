@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using Unity.PlasticSCM.Editor.WebApi;
@@ -46,8 +47,12 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
                 {
                     sendToPlayedPile(sCard);
                     mainInstance.playerOne.playerHand.Remove(sCard);
+                    this.enabled = false;
                 }
                 numClicks = 0;
+                mainInstance.playerOne.selectedCards.Clear();
+                mainInstance.playerHandPositioning(mainInstance.playerOne,mainInstance.p1HandSpace);
+                mainInstance.displayPossiblePlays();
             }
         }
 
@@ -64,6 +69,7 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
     void sendToPlayedPile(GameObject cardToSend)
     {
         GameObject playedCards = GameObject.Find("Played Cards");
+        cardToSend.transform.parent = playedCards.transform;
         cardToSend.transform.position = playedCards.transform.localPosition;
         mainInstance.playedPile.Add(cardToSend);
     }

@@ -24,13 +24,13 @@ public class MainTycoon : MonoBehaviour
     player playerTwo = new player();
     player playerThree = new player();
     player playerFour = new player();
-    
+
     [SerializeField] private GameObject p1Hand;
     [SerializeField] private GameObject p2Hand;
     [SerializeField] private GameObject p3Hand;
     [SerializeField] private GameObject p4Hand;
     
-    [SerializeField] private GameObject p1HandSpace; //Player's Hand on Screen
+    public GameObject p1HandSpace; //Player's Hand on Screen
     [SerializeField] private GameObject p2HandSpace; //Player's Hand on Screen
     [SerializeField] private GameObject p3HandSpace; //Player's Hand on Screen
     [SerializeField] private GameObject p4HandSpace; //Player's Hand on Screen
@@ -39,6 +39,7 @@ public class MainTycoon : MonoBehaviour
     //GAME PROPERTIES----------------------------
     List<int> deckSplit = new List<int>() {13,13,14,14}; //Splitting the deck
     public List<GameObject> playedPile = new List<GameObject>();
+    public List<GameObject> showSelected = new List<GameObject>();
 
     /*
     //Type of hands being played
@@ -52,6 +53,10 @@ public class MainTycoon : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+    private void Update()
+    {
+        showSelected=playerOne.selectedCards;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -94,7 +99,7 @@ public class MainTycoon : MonoBehaviour
         }
     }
 
-    void playerHandPositioning(player inputPlayer,GameObject handSpace)
+    public void playerHandPositioning(player inputPlayer,GameObject handSpace)
     {
         int handSize = inputPlayer.playerHand.Count;
         Vector2 spaceCenter = handSpace.transform.position;
