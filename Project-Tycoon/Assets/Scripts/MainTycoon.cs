@@ -17,6 +17,7 @@ public class player
 
 public class MainTycoon : MonoBehaviour
 {
+    public static MainTycoon instance { get; private set; }
     //GET PLAYER OBJECTS-------------------------
     public player playerOne = new player();
     player playerTwo = new player();
@@ -49,7 +50,7 @@ public class MainTycoon : MonoBehaviour
 
     private void Awake()
     {
-
+        instance = this;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -67,15 +68,9 @@ public class MainTycoon : MonoBehaviour
         opponentHandPositioning(playerFour,p4HandSpace);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void fillPlayerHand(player inputPlayer, GameObject pHand)
     {
-        var mtDeck = CreateDeck.Instance.mainDeck;
+        var mtDeck = CreateDeck.instance.mainDeck;
 
         int pickRandomSplit = UnityEngine.Random.Range(0, deckSplit.Count);
         int pickedNum = deckSplit[pickRandomSplit];

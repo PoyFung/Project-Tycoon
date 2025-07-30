@@ -5,10 +5,10 @@ using UnityEngine.EventSystems;
 
 public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    public static MainTycoon mainInstance { get; private set; }
     private bool selected = false;
     int numClicks = 0;
     public string cardKey;
+    private MainTycoon mainInstance;
 
     public void setCardKey(string key)
     {
@@ -41,7 +41,7 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
             if (numClicks == 2)
             {
-                Debug.Log("REACHED");
+                mainInstance = MainTycoon.instance;
                 sendToPlayedPile();
                 numClicks = 0;
                 this.enabled = false;

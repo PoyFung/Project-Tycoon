@@ -15,7 +15,7 @@ public class card
 }
 public class CreateDeck : MonoBehaviour
 {
-    public static CreateDeck Instance { get; private set; }
+    public static CreateDeck instance { get; private set; }
     public Dictionary<string, card> mainDeck = new Dictionary<string, card>() { };
 
     [SerializeField] private GameObject cardPrefab;
@@ -23,9 +23,9 @@ public class CreateDeck : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this; // Assign the singleton instance
+            instance = this; // Assign the singleton instance
             DontDestroyOnLoad(gameObject); // Optional: keep between scenes
         }
         else
