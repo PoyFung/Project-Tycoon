@@ -15,16 +15,7 @@ public class CreateDeck : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this; // Assign the singleton instance
-            DontDestroyOnLoad(gameObject); // Optional: keep between scenes
-        }
-        else
-        {
-            Destroy(gameObject); // Ensure only one instance exists
-        }
-
+        instance = this; // Assign the singleton instance
         createNewDeck();
     }
 
@@ -43,7 +34,6 @@ public class CreateDeck : MonoBehaviour
             createCard(i + "D","Number",rank,"Diamond");
             createCard(i + "S","Number",rank,"Spade");
             createCard(i + "C","Number",rank,"Club");
-
         }
 
         for (int i = 11; i <= 15; i++)

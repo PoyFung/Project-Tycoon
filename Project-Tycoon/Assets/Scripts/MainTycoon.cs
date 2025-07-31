@@ -41,14 +41,13 @@ public class MainTycoon : MonoBehaviour
     public List<GameObject> playedPile = new List<GameObject>();
     public List<GameObject> showSelected = new List<GameObject>();
 
-    /*
     //Type of hands being played
-    private bool isSingle = false;
-    private bool isDouble = false;
-    private bool isTriple = false;
-    private bool isQuadruple = false;
-    private bool isRevolution = false;
-    */
+    public int setType = 0;
+    public bool isSingle = false;
+    public bool isDouble = false;
+    public bool isTriple = false;
+    public bool isQuadruple = false;
+    public bool isRevolution = false;
 
     private void Awake()
     {
@@ -135,31 +134,72 @@ public class MainTycoon : MonoBehaviour
             opCard.transform.position = handSpace.transform.position;
         }
     }
+
     public void displayPossiblePlays ()
     {
-        if (playerOne.selectedCards.Any())
+        foreach (var pCard in playerOne.playerHand)
+        {
+            var currentCard = pCard.GetComponent<CardInteraction>();
+            var currentCardProperties = pCard.GetComponent<CardProperties>();
+
+            if (playedPile.Any()==false)
+            {
+                if (currentCard.selected == false)
+                {
+                    currentCard.changeCardColor(new Color32(206, 96, 96, 255));
+                    currentCard.GetComponent<CardInteraction>().enabled = true;
+                }
+            }
+
+            else if (playedPile.Last().GetComponent<CardProperties>().cardRank
+                <currentCardProperties.cardRank)
+            {
+                currentCard.changeCardColor(new Color32(206, 96, 96, 255));
+                currentCard.GetComponent<CardInteraction>().enabled = true;
+            }
+        }
+
+        if (playerOne.selectedCards.Any()) //When the player has selected cards
         {
             int currentRankedPlay = playerOne.selectedCards[0].GetComponent<CardProperties>().cardRank;
             foreach (var pCard in playerOne.playerHand)
             {
                 var currentCard = pCard.GetComponent<CardInteraction>();
                 var currentCardProperties = pCard.GetComponent<CardProperties>();
-                if (currentCard.selected == false && currentCardProperties.cardRank != currentRankedPlay)
+
+                /*When there are no cards layed in the pile and you've selected a card,
+                 deactivate any cards that don't match the selected rank*/
+                if (currentCard.selected == false
+                    && currentCardProperties.cardRank != currentRankedPlay)
                 {
                     currentCard.changeCardColor(new Color32(116, 45, 45, 255));
+                    currentCard.GetComponent<CardInteraction>().enabled = false;
                 }
             }
         }
-        else
+    }
+
+    public void determineSetType()
+    {
+        if (isSingle==false && isDouble==false && isTriple==false && isQuadruple==false)
         {
-            foreach (var pCard in playerOne.playerHand)
+            switch (playedPile.Count)
             {
-                var currentCard = pCard.GetComponent<CardInteraction>();
-                var currentCardProperties = pCard.GetComponent<CardProperties>();
-                if (currentCard.selected == false)
-                {
-                    currentCard.changeCardColor(new Color32(206, 96, 96, 255));
-                }
+                case 1:
+                    isSingle = true;
+                    setType = 1;
+                    break;
+                case 2:
+                    isDouble = true;
+                    setType = 2;
+                    break;
+                case 3:
+                    isTriple = true;
+                    setType = 3;
+                    break;
+                case 4:
+                    setType = 4;
+                    break;
             }
         }
     }

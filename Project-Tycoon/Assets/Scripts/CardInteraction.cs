@@ -11,6 +11,7 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
     int numClicks = 0;
     private MainTycoon mainInstance;
 
+    //ON MOUSE ENTER HIT BOX
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (selected == false)
@@ -18,9 +19,9 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
             transform.localPosition =
                 new Vector2(transform.localPosition.x, transform.localPosition.y + 0.25f);
         }
-        //Debug.Log("MOUSE ON");
     }
 
+    //ON MOUSE EXIT HIT BOX
     public void OnPointerExit(PointerEventData eventData)
     {
         if (selected == false)
@@ -28,12 +29,12 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
             transform.localPosition =
                 new Vector2(transform.localPosition.x, transform.localPosition.y - 0.25f);
         }
-        //Debug.Log("MOUSE OFF");
     }
 
+    //ON MOUSE CLICK
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left) //Left Mouse Button
         {
             mainInstance = MainTycoon.instance;
             selected = true;
@@ -43,20 +44,25 @@ public class CardInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
             if (numClicks == 2)
             {
-                foreach (var sCard in mainInstance.playerOne.selectedCards)
+                mainInstance = MainTycoon.instance;
+                for(int i=0;i<mainInstance.playerOne.selectedCards.Count-1;i++)
                 {
-                    sendToPlayedPile(sCard);
-                    mainInstance.playerOne.playerHand.Remove(sCard);
+                    sendToPlayedPile(mainInstance.playerOne.selectedCards[i]);
+                    mainInstance.playerOne.playerHand.Remove(mainInstance.playerOne.selectedCards[i]);
                     this.enabled = false;
                 }
                 numClicks = 0;
+
+                mainInstance = MainTycoon.instance;
                 mainInstance.playerOne.selectedCards.Clear();
                 mainInstance.playerHandPositioning(mainInstance.playerOne,mainInstance.p1HandSpace);
                 mainInstance.displayPossiblePlays();
+
+                mainInstance.determineSetType();
             }
         }
 
-        if (eventData.button == PointerEventData.InputButton.Right)
+        if (eventData.button == PointerEventData.InputButton.Right) //Right Mouse button
         {
             mainInstance = MainTycoon.instance;
             selected = false;
