@@ -113,6 +113,7 @@ public class MainTycoon : MonoBehaviour
         }
 
         int currentCard = 0;
+
         for (int i= 0;i<handSize;i++)
         {
             inputPlayer.playerHand[currentCard].transform.position
@@ -135,7 +136,6 @@ public class MainTycoon : MonoBehaviour
             opCard.transform.position = handSpace.transform.position;
         }
     }
-
     public void displayPossiblePlays ()
     {
         foreach (var pCard in playerOne.playerHand)
