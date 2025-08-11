@@ -8,6 +8,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class player
@@ -72,6 +73,8 @@ public class MainTycoon : MonoBehaviour
         opponentHandPositioning(playerTwo,p2HandSpace);
         opponentHandPositioning(playerThree,p3HandSpace);
         opponentHandPositioning(playerFour,p4HandSpace);
+
+        findDupes();
     }
 
     void fillPlayerHand(player inputPlayer, GameObject pHand)
@@ -136,6 +139,7 @@ public class MainTycoon : MonoBehaviour
             opCard.transform.position = handSpace.transform.position;
         }
     }
+
     public void displayPossiblePlays ()
     {
         foreach (var pCard in playerOne.playerHand)
@@ -177,6 +181,14 @@ public class MainTycoon : MonoBehaviour
                     currentCard.GetComponent<CardInteraction>().enabled = false;
                 }
             }
+        }
+    }
+
+    public void findDupes(List<GameObject> input)
+    {
+        for(int i=0;i< input.Count;i++)
+        {
+
         }
     }
 
